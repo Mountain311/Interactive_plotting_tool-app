@@ -18,8 +18,11 @@ uploaded_file = st.file_uploader(
 if uploaded_file is not None:
     if uploaded_file.name.endswith('.csv'):
         df = pd.read_csv(uploaded_file)  
-    elif uploaded_file.name.endswith('.xlsx') or uploaded_file.name.endswith('.xls'):
-        df = pd.read_excel(uploaded_file)
+    if uploaded_file.name.endswith('.xlsx') or uploaded_file.name.endswith('.xls'):
+        # Show sheet selection
+        sheet_name = st.selectbox('Select Sheet', pd.ExcelFile(uploaded_file).sheet_names)
+        # Read specific sheet
+        df = pd.read_excel(uploaded_file, sheet_name=sheet_name)
 
 
     with st.sidebar:
